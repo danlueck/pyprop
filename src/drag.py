@@ -4,8 +4,6 @@ from numpy.typing import ArrayLike
 from src.constants import R_EARTH
 from src.constants import SEC_SID_DAY
 from valladopy.astro.time.frame_conversions import ecef2teme, teme2ecef
-from valladopy.astro.time.data import iau80in
-import time
 
 
 def get_acc_drag(state: ArrayLike, sat: dict, date: float, frame) -> np.ndarray:
@@ -21,9 +19,7 @@ def get_acc_drag(state: ArrayLike, sat: dict, date: float, frame) -> np.ndarray:
     density = get_density(altitude=altitude)
 
     B_inv = (sat["area"]*sat["c_d"]*1e-6)/sat["mass"]
-
-    r_ecef, _, _ = teme2ecef(state[0:3], np.zeros(3), np.zeros(3), 0.0, date, 0.0, 0.0, 0.0, frame)
-    _, vel_atm, _ = ecef2teme(r_ecef, np.zeros(3), np.zeros(3), 0.0, date, 0.0, 0.0, 0.0, frame)
+    vel_atm = get_vel_atm(state=state[0:3])
     rel_vel = state[3:6] - vel_atm
 
     acc_drag = -0.5 * B_inv * density * np.linalg.norm(rel_vel)**2*(rel_vel/(np.linalg.norm(rel_vel)))
@@ -56,14 +52,14 @@ def get_density(altitude:float) -> float:
     return 0.0
    
 def get_vel_atm(state):
-    r_loc = math.sqrt(np.linalg.norm(state[0:3])**2-state[2]**2)
+    r_loc = math.sqrt(state[0]**2 + state[1]**2)
     c_loc = 2*math.pi*r_loc
     vel_atm_loc = c_loc/SEC_SID_DAY
     vel_vec_atm = state[0:3]
-    rot_mat = np.matrix([[0.0, -1.0, 0.0],
+    rot_mat = np.array([[0.0, -1.0, 0.0],
                          [1.0,  0.0, 0.0],
                          [0.0,  0.0, 0.0]])
-    vel_vec_atm = np.dot(rot_mat, vel_vec_atm)
+    vel_vec_atm = rot_mat.dot(vel_vec_atm)
     vel_vec_atm = vel_vec_atm * (vel_atm_loc/np.linalg.norm(vel_vec_atm))    
     return vel_vec_atm
    

@@ -1,2 +1,5 @@
 .venv
 outputs/plots/*
+work/output
+src/__pycache__
+*.png

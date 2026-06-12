@@ -21,7 +21,7 @@ J2 = 0.001082626174
 J4 = -1.6198976e-06
 RAD2DEG = 180.0/math.pi
 SEC_IN_DAY = 3600*24
-iau80 = iau80in("/home/dluck/Development/pyprop/data")
+iau80 = iau80in("data")
 def deriv(state: ArrayLike, params: dict, date: float) -> np.ndarray:
     """_summary_
 
