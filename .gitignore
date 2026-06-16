@@ -1,5 +1,11 @@
 .venv
 outputs/plots/*
-work/output
+work/output/
 src/__pycache__
 *.png
+CMakeCache.txt
+CMakeFiles/
+build/
+__pycache__
+pyprop.egg-info
+pyprop_old.py
