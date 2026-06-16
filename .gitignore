@@ -1,6 +1,6 @@
 .venv
-outputs/plots/*
-work/output/
+outputs/plots/*.png
+work/output/*.csv
 src/__pycache__
 *.png
 CMakeCache.txt
