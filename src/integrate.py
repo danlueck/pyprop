@@ -29,15 +29,15 @@ def deriv(state: np.ndarray, params: dict, date: datetime) -> np.ndarray:
     return deriv
 
 def get_all_acc(state: np.ndarray, perturbations: dict, satellite: dict, date: datetime) -> np.ndarray:
-    """Estimate all accelarations on 
+    """Estimate all Accelerations on 
 
     Args:
         state (np.ndarray): Cartesian state vector in ECI frame
         perturbations (dict): Dictionary of considered perturbations
         satellite (dict): Dictionary of satellite properties
-        date (datetime): Date to evaluate accelaration
+        date (datetime): Date to evaluate Acceleration
     Returns:
-        np.ndarray: Vector of accelarations
+        np.ndarray: Vector of Accelerations
     """
 
     all_acc = get_acc_grav(state=state, geopotenital_order=perturbations["Geopotential"])

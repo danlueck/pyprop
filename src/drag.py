@@ -7,13 +7,13 @@ from valladopy.astro.time.frame_conversions import ecef2teme, teme2ecef
 
 
 def get_acc_drag(state: np.ndarray, sat: dict) -> np.ndarray:
-    """Estimates the Accelaration due to Gravity at a given moment
+    """Estimates the Acceleration due to Gravity at a given moment
 
     Args:
         state (np.ndarray): State Vector at given time
         sat (dict): Dictionary with physical properties of satellite
     Returns:
-        np.ndarray: Accelaration vector
+        np.ndarray: Acceleration vector
     """
     altitude = np.linalg.norm(state[0:3]) - R_EARTH
     density = get_density(altitude=altitude)

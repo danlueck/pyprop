@@ -5,14 +5,14 @@ from src.constants import MU, J2, J3, J4, R_EARTH
 
 
 def get_acc_grav(state: ArrayLike, geopotenital_order: int=0) -> np.ndarray:
-    """Estimates the Accelaration due to Gravity at a given moment
+    """Estimates the Acceleration due to Gravity at a given moment
 
     Args:
         state (ArrayLike): State Vector at given time
         geopotenital_order (int): Geopotential degree order
 
     Returns:
-        np.ndarray: Accelaration vector
+        np.ndarray: Acceleration vector
     """
     acc_grav = -(MU/(np.linalg.norm(state[0:3]))**3)*state[0:3]
     if (geopotenital_order >= 2):
@@ -26,13 +26,13 @@ def get_acc_grav(state: ArrayLike, geopotenital_order: int=0) -> np.ndarray:
 
 
 def get_acc_J2(state: ArrayLike) -> np.ndarray:
-    """Estimates the Accelaration due to J2 Term
+    """Estimates the Acceleration due to J2 Term
 
     Args:
         state (ArrayLike): State Vector at given time
 
     Returns:
-        np.ndarray: Accelaration vector
+        np.ndarray: Acceleration vector
     """
     acc_J2 = np.zeros(3)
     pre_term = -(3.0/2.0) * MU*J2 * ((R_EARTH**2)/(np.linalg.norm(state[0:3])**5))
@@ -43,13 +43,13 @@ def get_acc_J2(state: ArrayLike) -> np.ndarray:
 
 
 def get_acc_J3(state: ArrayLike) -> np.ndarray:
-    """Estimates the Accelaration due to J3 term
+    """Estimates the Acceleration due to J3 term
 
     Args:
         state (ArrayLike): State Vector at given time
 
     Returns:
-        np.ndarray: Accelaration vector
+        np.ndarray: Acceleration vector
     """
     acc_J3 = np.zeros(3)
     pre_term = -(5.0/2.0) * MU*J3 * ((R_EARTH**3)/(np.linalg.norm(state[0:3])**7))
@@ -60,13 +60,13 @@ def get_acc_J3(state: ArrayLike) -> np.ndarray:
 
 
 def get_acc_J4(state: ArrayLike) -> np.ndarray:
-    """Estimates the Accelaration due to J4 term
+    """Estimates the Acceleration due to J4 term
 
     Args:
         state (ArrayLike): State Vector at given time
 
     Returns:
-        np.ndarray: Accelaration vector
+        np.ndarray: Acceleration vector
     """
     acc_J4 = np.zeros(3)
     pre_term = -(15.0/8.0) * MU*J4 * ((R_EARTH**4)/(np.linalg.norm(state[0:3])**7))

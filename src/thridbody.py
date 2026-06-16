@@ -15,7 +15,7 @@ def get_acc_3rd_body(state: np.ndarray, date: datetime, bodies: dict) -> np.ndar
         bodies (dict): Dictionary of 3rd bodies to consider
 
     Returns:
-        np.ndarray: Accelaration vector due to 3rd bodies gravity
+        np.ndarray: Acceleration vector due to 3rd bodies gravity
     """
     acc_3rd = np.zeros(3)
     if(bodies["Sun"]):
@@ -25,7 +25,7 @@ def get_acc_3rd_body(state: np.ndarray, date: datetime, bodies: dict) -> np.ndar
     return acc_3rd
 
 def get_acc_n_body(state: np.ndarray, date: datetime, pos_fun, mu_body: float) -> np.ndarray:
-    """Get the accelaration due to 3rd body gravities
+    """Get the Acceleration due to 3rd body gravities
 
     Args:
         state (np.ndarray): Cartesian state vector in ECI frame
@@ -34,7 +34,7 @@ def get_acc_n_body(state: np.ndarray, date: datetime, pos_fun, mu_body: float) -
         mu_body (float): Gravity constant of 3rd body
 
     Returns:
-        np.ndarray: Accelaration vector due to 3rd body gravity
+        np.ndarray: Acceleration vector due to 3rd body gravity
     """
     julian_day, julian_fraction = jday(date.year, date.month, date.day, date.hour, date.minute, date.second)
     julian_date = julian_day + julian_fraction 

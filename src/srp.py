@@ -5,7 +5,7 @@ from datetime import datetime
 from valladopy.mathtime.julian_date import jday
 
 def get_acc_srp(state: np.ndarray, date: datetime, satellite: dict) -> np.ndarray:
-    """Get accelaration due to solar radiation pressure
+    """Get Acceleration due to solar radiation pressure
 
     Args:
         state (np.ndarray): Cartesian state vector in ECI frame
@@ -13,7 +13,7 @@ def get_acc_srp(state: np.ndarray, date: datetime, satellite: dict) -> np.ndarra
         satellite (dict): Dictionary of physical satellite properties
 
     Returns:
-        np.ndarray: Accelarations due to solar radiation pressure
+        np.ndarray: Accelerations due to solar radiation pressure
     """
     julian_day, julian_fraction = jday(date.year, date.month, date.day, date.hour, date.minute, date.second)
     julian_date = julian_day + julian_fraction 
