@@ -6,7 +6,7 @@ from src.constants import SEC_SID_DAY
 from valladopy.astro.time.frame_conversions import ecef2teme, teme2ecef
 
 
-def get_acc_drag(state: ArrayLike, sat: dict, date: float, frame) -> np.ndarray:
+def get_acc_drag(state: ArrayLike, sat: dict) -> np.ndarray:
     """Estimates the Accelaration due to Gravity at a given moment
 
     Args:
