@@ -9,6 +9,7 @@ def get_acc_grav(state: ArrayLike, geopotenital_order: int=0) -> np.ndarray:
 
     Args:
         state (ArrayLike): State Vector at given time
+        geopotenital_order (int): Geopotential degree order
 
     Returns:
         np.ndarray: Accelaration vector
@@ -25,7 +26,7 @@ def get_acc_grav(state: ArrayLike, geopotenital_order: int=0) -> np.ndarray:
 
 
 def get_acc_J2(state: ArrayLike) -> np.ndarray:
-    """Estimates the Accelaration due to Gravity at a given moment
+    """Estimates the Accelaration due to J2 Term
 
     Args:
         state (ArrayLike): State Vector at given time
@@ -42,7 +43,7 @@ def get_acc_J2(state: ArrayLike) -> np.ndarray:
 
 
 def get_acc_J3(state: ArrayLike) -> np.ndarray:
-    """Estimates the Accelaration due to Gravity at a given moment
+    """Estimates the Accelaration due to J3 term
 
     Args:
         state (ArrayLike): State Vector at given time
@@ -59,7 +60,7 @@ def get_acc_J3(state: ArrayLike) -> np.ndarray:
 
 
 def get_acc_J4(state: ArrayLike) -> np.ndarray:
-    """Estimates the Accelaration due to Gravity at a given moment
+    """Estimates the Accelaration due to J4 term
 
     Args:
         state (ArrayLike): State Vector at given time

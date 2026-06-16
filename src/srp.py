@@ -1,18 +1,19 @@
 import numpy as np
-from numpy.typing import ArrayLike
 from valladopy.astro.celestial.sun import position as sun_pos
 from valladopy.astro.celestial.sun import in_light
 from datetime import datetime
 from valladopy.mathtime.julian_date import jday
 
-def get_acc_srp(state: ArrayLike, date: datetime, satellite: dict) -> np.ndarray:
-    """Estimates the Accelaration due to Gravity at a given moment
+def get_acc_srp(state: np.ndarray, date: datetime, satellite: dict) -> np.ndarray:
+    """Get accelaration due to solar radiation pressure
 
     Args:
-        state (ArrayLike): State Vector at given time
+        state (np.ndarray): Cartesian state vector in ECI frame
+        date (datetime): Date to evaluate
+        satellite (dict): Dictionary of physical satellite properties
 
     Returns:
-        np.ndarray: Accelaration vector
+        np.ndarray: Accelarations due to solar radiation pressure
     """
     julian_day, julian_fraction = jday(date.year, date.month, date.day, date.hour, date.minute, date.second)
     julian_date = julian_day + julian_fraction 

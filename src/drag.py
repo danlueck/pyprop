@@ -6,12 +6,12 @@ from src.constants import SEC_SID_DAY
 from valladopy.astro.time.frame_conversions import ecef2teme, teme2ecef
 
 
-def get_acc_drag(state: ArrayLike, sat: dict) -> np.ndarray:
+def get_acc_drag(state: np.ndarray, sat: dict) -> np.ndarray:
     """Estimates the Accelaration due to Gravity at a given moment
 
     Args:
-        state (ArrayLike): State Vector at given time
-
+        state (np.ndarray): State Vector at given time
+        sat (dict): Dictionary with physical properties of satellite
     Returns:
         np.ndarray: Accelaration vector
     """
@@ -26,7 +26,18 @@ def get_acc_drag(state: ArrayLike, sat: dict) -> np.ndarray:
     return acc_drag
 
 
-def get_density(altitude:float) -> float:
+def get_density(altitude: float) -> float:
+    """Retrieve the density of the atmosphere at a given altitude using an exponential model
+
+    Args:
+        altitude (float): Altitude for which to evaluate density
+
+    Raises:
+        Exception: Throws exception if objects altitude is negative
+
+    Returns:
+        float: Density of the atmosphere at the given altitude
+    """
     expAltitudes = np.array([25.0, 30.0, 40.0, 50.0, 60.0, 70.0, 80.0, 90.0,100.0, 
                              110.0,120.0,130.0,140.0,150.0,180.0,200.0,250.0,300.0, 
                              350.0,400.0,450.0,500.0,600.0,700.0,800.0,900.0,1000.0])
@@ -51,7 +62,14 @@ def get_density(altitude:float) -> float:
         
     return 0.0
    
-def get_vel_atm(state):
+def get_vel_atm(state: np.ndarray) -> np.ndarray:
+    """Estimate the velocity of the rotating atmosphere in ECI frame
+
+    Args:
+        state (np.ndarray): State Vector at given time
+    Returns:
+        np.ndarray: Velocity of Atmosphere
+    """
     r_loc = math.sqrt(state[0]**2 + state[1]**2)
     c_loc = 2*math.pi*r_loc
     vel_atm_loc = c_loc/SEC_SID_DAY

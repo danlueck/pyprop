@@ -1,14 +1,21 @@
 import argparse
-from src.io import process_input, write_outputs, plot_results
+from src.io import process_input, write_outputs, plot_results, plot_altitude
 from src.propagate import propagate
 import time
 
-def pyprop(input, output):
+def pyprop(input: str, output: str) -> None:
+    """Run a propagation
+
+    Args:
+        input (str): Location of Input file
+        output (str): Location of Output directory
+    """
     params, state, date_0, date_f =  process_input(input)
     current_date, current_state, df_cart, df_kep = propagate(state=state, params=params, date_0=date_0, date_f=date_f)
     print(f"Final State at  {current_date} is {current_state}")
     write_outputs(df_kep, df_cart, output)
     plot_results(df_kep, output)
+    plot_altitude(df_cart, output)
 
 
 if __name__ == '__main__':

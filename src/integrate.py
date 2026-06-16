@@ -1,6 +1,5 @@
 
 import numpy as np
-from numpy.typing import ArrayLike
 
 from src.gravity import get_acc_grav
 from src.drag import get_acc_drag
@@ -8,15 +7,15 @@ from src.thridbody import get_acc_3rd_body
 from src.srp import get_acc_srp
 from datetime import datetime, timedelta
 
-def deriv(state: ArrayLike, params: dict, date: datetime) -> np.ndarray:
-    """_summary_
+def deriv(state: np.ndarray, params: dict, date: datetime) -> np.ndarray:
+    """Find the derivative of the state at a given epoch
 
     Args:
-        state (ArrayLike): _description_
-        params (dict): _description_
-
+        state (ArrayLike): Cartesian state vector in ECI frame
+        params (dict): Dictionary of input paramets
+        date (datetime): Date for which to evaluate derivative
     Returns:
-        np.ndarray: _description_
+        np.ndarray: Derivative of state at date
     """
     satellite = params["satellite_properties"]["physical_properties"]
     perturbations = params["integration"]["perturbations"]
@@ -29,16 +28,18 @@ def deriv(state: ArrayLike, params: dict, date: datetime) -> np.ndarray:
 
     return deriv
 
-def get_all_acc(state: ArrayLike, perturbations: dict, satellite: dict, date: datetime) -> np.ndarray:
-    """_summary_
+def get_all_acc(state: np.ndarray, perturbations: dict, satellite: dict, date: datetime) -> np.ndarray:
+    """Estimate all accelarations on 
 
     Args:
-        state (ArrayLike): _description_
-        perturbations (dict): _description_
-
+        state (np.ndarray): Cartesian state vector in ECI frame
+        perturbations (dict): Dictionary of considered perturbations
+        satellite (dict): Dictionary of satellite properties
+        date (datetime): Date to evaluate accelaration
     Returns:
-        np.ndarray: _description_
+        np.ndarray: Vector of accelarations
     """
+
     all_acc = get_acc_grav(state=state, geopotenital_order=perturbations["Geopotential"])
     if(perturbations["drag"]):
         all_acc += get_acc_drag(state=state, sat=satellite)
@@ -49,7 +50,20 @@ def get_all_acc(state: ArrayLike, perturbations: dict, satellite: dict, date: da
 
     return all_acc
 
-def integrate_step_rk4(state: ArrayLike, step: float, params: dict, date:datetime, fun_deriv=deriv) -> np.ndarray:
+def integrate_step_rk4(state: np.ndarray, step: float, params: dict, date:datetime, fun_deriv=deriv) -> np.ndarray:
+    """Integrate one step using 4th Order Runge Kutta
+
+    Args:
+        state (np.ndarray): Cartesian state vector in ECI frame
+        step (float): Step size in seconds
+        params (dict): Dictionary of input paramets
+        date (datetime): Start date of current propagation step
+        fun_deriv (function, optional): Funtion to find derivative of state. Defaults to deriv.
+
+    Returns:
+        np.ndarray: Integrated change for one step
+    """
+
     k1 = fun_deriv(state=state, params=params, date=date)
     state_1 = state + k1*(step/2)
 
