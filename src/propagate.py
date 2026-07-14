@@ -1,5 +1,5 @@
 import numpy as np
-from src.integrate import deriv, integrate_step_rk4
+from src.integrate import deriv, integrate_step_rk4, integrate_step_explicit_euler, integrate_step_rkf
 from src.io import initialize_dataframes, append_dataframe
 from src.manoeuvre import apply_dv
 from datetime import datetime, timedelta
@@ -39,17 +39,25 @@ def propagate(state: np.ndarray, params: dict, date_0: datetime, date_f: datetim
                         params["satellite_properties"]["instantaneous_manoeuvres"]["W"]])
 
     i = 0
+
+    integrator = params["integration"]["integrator"]
+    step = params["integration"]["step"]
     # Main Propagation Loop
     while(current_date<date_f):
 
         if((i%params["outputs"]["out_step"])==0):
-            df_kep, df_cart = append_dataframe(params=params, state=current_state, date=current_date, df_kep=df_kep, df_cart=df_cart)        
-        
+            df_kep, df_cart = append_dataframe(params=params, state=current_state, date=current_date, df_kep=df_kep, df_cart=df_cart)
         try:
-            current_state = current_state + integrate_step_rk4(current_state, params["integration"]["step"], params, current_date, deriv)
-            if(manoeuvres and current_date < man_time <= current_date + timedelta(0, params["integration"]["step"])):
+            # current_state = current_state + integrate_step_explicit_euler(current_state, params["integration"]["step"], params, current_date, deriv)
+            if integrator ==2:
+                state_change, step = integrate_step_rkf(current_state, step, params, current_date, deriv)
+            else:
+                state_change = integrate_step_rk4(current_state, params["integration"]["step"], params, current_date, deriv)
+            current_state = current_state + state_change
+
+            if(manoeuvres and current_date < man_time <= current_date + timedelta(0, step)):
                 current_state[3:6] = current_state[3:6] + apply_dv(current_state, manv)
-            current_date = current_date + timedelta(0, params["integration"]["step"]) 
+            current_date = current_date + timedelta(0, step) 
             
         except Exception as e:
             print(e)
